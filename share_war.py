@@ -16,7 +16,7 @@ def login(debugger=False):
     else:
         pass
 
-    url = "https://poshmark.com/login"
+    url = "https://poshmark.ca/login"
     driver.get(url)
 
     time.sleep(rt(5))
@@ -136,7 +136,7 @@ def offer_user_quit():
 
 
 def get_seller_page_url(poshmark_account):
-    url_stem = 'https://poshmark.com/closet/'
+    url_stem = 'https://poshmark.ca/closet/'
     available = '?availability=available'
     url = '{}{}{}'.format(url_stem, poshmark_account, available)
     return url
@@ -169,19 +169,19 @@ def get_closet_urls():
 
 
 def get_closet_share_icons():
-    item_pat = "//div[@class='social-info social-actions d-fl ai-c jc-c']"
+    item_pat = "//div[@class='d--fl ai--c social-action-bar__action social-action-bar__share']"
     items = driver.find_elements_by_xpath(item_pat)
-    share_icons = [i.find_element_by_css_selector("a[class='share']") for i in items]
+    share_icons = [i.find_element_by_css_selector("i[class='icon share-gray-large']") for i in items]
     return share_icons
 
 
 def clicks_share_followers(share_icon, d=4.5):
-
     ## First share click
     driver.execute_script("arguments[0].click();", share_icon); time.sleep(rt(d))
 
     ## Second share click
-    share_pat = "//a[@class='pm-followers-share-link grey']"
+#    share_pat = "//a[@class='pm-followers-share-link grey']"
+    share_pat = "//span[@class='share-wrapper__share-title caption']"
     share_followers = driver.find_element_by_xpath(share_pat)
     driver.execute_script("arguments[0].click();", share_followers); time.sleep(rt(d))
 
@@ -422,7 +422,8 @@ if __name__=="__main__":
         random_loop_time = rt(args.time)
 
         ## Run Main App
-        quit_input = False
+#        quit_input = False
+        quit_input = True
         deploy_share_war(args.number, args.order, args.random_subset)
 
         if quit_input is False:
